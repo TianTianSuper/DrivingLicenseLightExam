@@ -1,6 +1,4 @@
 import random
-import broadcast
-import time
 
 
 problems_all = [
@@ -24,16 +22,18 @@ problems_all = [
     # 关大灯，留小灯（直接转动到小灯即可，不要乱动其他）
     "在路边临时停车"
 ]
-problems_queue = ["下面将进行模拟夜间考试，听到语音指令后，请在5秒内做出相应的灯光操作。",
-                  "请打开前照灯"
-                  ]
-problems_index = random.sample(range(0, 12), 5)
 
-for i in range(5):
-    problems_queue.append(problems_all[problems_index[i]])
-problems_queue.append("模拟夜间考试完成，请关闭所有灯光。请起步，继续完成考试。")
 
-for i in range(len(problems_queue)):
-    broadcast.init(problems_queue[i])
-    if i != len(problems_queue)-1:
-        time.sleep(5)
+def init():
+    problems_queue = ["下面将进行模拟夜间考试，听到语音指令后，请在5秒内做出相应的灯光操作。",
+                      "请打开前照灯"
+                      ]
+    problems_index = random.sample(range(0, 12), 5)
+    problems_index.insert(0,-1)
+    problems_index.append(-2)
+    for i in range(1,6):
+        problems_queue.append(problems_all[problems_index[i]])
+    problems_queue.append("模拟夜间考试完成，请关闭所有灯光。")
+    problems_queue.append("请起步，继续完成考试。")
+
+    return problems_index, problems_queue  # 用于生成问题
